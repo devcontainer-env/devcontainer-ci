@@ -5,7 +5,6 @@
 
 [![CI](https://github.com/devcontainer-env/devcontainer-ci/actions/workflows/ci.yml/badge.svg)](https://github.com/devcontainer-env/devcontainer-ci/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/devcontainer-env/devcontainer-ci)](https://github.com/devcontainer-env/devcontainer-ci/releases/latest)
-[![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Automatically installs `@devcontainers/cli`, runs dev containers with full
