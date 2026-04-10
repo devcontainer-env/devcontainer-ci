@@ -56,4 +56,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: regenerate dist'
+          branch: ${{ github.head_ref }}
           file_pattern: 'dist/*'
