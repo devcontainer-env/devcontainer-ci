@@ -29,8 +29,7 @@ jobs:
 
   build-dist:
     if: >
-      github.event_name == 'push' ||
-      (github.event_name == 'pull_request' &&
+      github.event_name == 'push' || (github.event_name == 'pull_request' &&
       startsWith(github.head_ref, 'release-please'))
     runs-on: ubuntu-latest
     steps:
@@ -57,5 +56,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: regenerate dist'
-          file_pattern: dist/
+          file_pattern: 'dist/*'
           add_options: '--force'
