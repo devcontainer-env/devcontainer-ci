@@ -54,13 +54,8 @@ jobs:
         run: npm run package
 
       - name: Commit Dist
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -f dist/
-          if git diff --staged --quiet; then
-            echo "No changes to dist/, skipping commit"
-          else
-            git commit -m "chore: regenerate dist"
-            git push origin HEAD:${{ github.head_ref || github.ref_name }}
-          fi
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: regenerate dist'
+          file_pattern: dist/
+          add_options: '--force'
