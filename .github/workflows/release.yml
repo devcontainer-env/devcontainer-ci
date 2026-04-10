@@ -47,7 +47,7 @@ jobs:
       - name: Build Dist
         run: npm run package
 
-      - name: "Commit Dist"
+      - name: Commit Dist
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
