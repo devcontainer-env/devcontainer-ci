@@ -1,20 +1,23 @@
 {
-  "name": "typescript-action",
-  "description": "GitHub Actions TypeScript template",
-  "version": "0.0.0",
-  "author": "",
+  "name": "devcontainer-ci",
+  "description": "GitHub Action to run a dev container using @devcontainers/cli",
+  "version": "1.0.0",
+  "author": "devcontainer-env",
   "type": "module",
   "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "homepage": "https://github.com/devcontainer-env/devcontainer-ci",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/devcontainer-env/devcontainer-ci.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/devcontainer-env/devcontainer-ci/issues"
   },
   "keywords": [
-    "actions"
+    "actions",
+    "devcontainer",
+    "github-actions",
+    "devcontainers"
   ],
   "exports": {
     ".": "./dist/index.js"
@@ -37,7 +40,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^3.0.0"
+    "@actions/core": "^3.0.0",
+    "@actions/exec": "^1.1.1"
   },
   "devDependencies": {
     "@eslint/compat": "^2.0.2",
