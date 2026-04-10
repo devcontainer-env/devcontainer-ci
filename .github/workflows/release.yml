@@ -57,4 +57,3 @@ jobs:
         with:
           commit_message: 'chore: regenerate dist'
           file_pattern: 'dist/*'
-          add_options: '--force'
