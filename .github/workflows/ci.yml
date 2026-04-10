@@ -44,15 +44,21 @@ jobs:
         id: npm-ci-test
         run: npm run ci-test
 
-      - name: Build Dist
-        id: build-dist
-        run: npm run package
+  test-action:
+    name: GitHub Actions Test
+    runs-on: ubuntu-latest
 
-      - name: Verify Dist is Up-to-Date
-        id: verify-dist
-        run: |
-          if [ "$(git diff --ignore-space-at-eol --text dist/ | wc -l)" -gt "0" ]; then
-            echo "Detected uncommitted changes in dist/. Run 'npm run package' and commit changes."
-            git diff --ignore-space-at-eol --text dist/
-            exit 1
-          fi
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v6
+
+      - name: Test Local Action
+        id: test-action
+        uses: ./
+        with:
+          milliseconds: 2000
+
+      - name: Print Output
+        id: output
+        run: echo "${{ steps.test-action.outputs.time }}"

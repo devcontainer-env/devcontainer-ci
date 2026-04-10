@@ -1,51 +1,24 @@
-name: Devcontainer CI
-description: Run Dev Containers in CI with automatic setup and cleanup.
-author: devcontainer-env
+name: The name of your action here
+description: Provide a description here
+author: Your name or organization here
 
+# Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: box
-  color: blue
+  icon: heart
+  color: red
 
+# Define your inputs here.
 inputs:
-  workspace-folder:
-    description: The workspace folder to use
-    default: '.'
-  config:
-    description: Path to the devcontainer.json file
-    default: ''
-  secrets-file:
-    description: Path to a secrets file to pass to the container
-    default: ''
-  image-name:
-    description: The image name to use
-    default: ''
-  container-id-label:
-    description: The container ID label
-    default: ''
-  run-args:
-    description: Additional arguments to pass to docker run (space-separated)
-    default: ''
-  skip-post-create:
-    description: Skip running postCreateCommand
-    default: 'false'
-  remote-env:
-    description:
-      Environment variables to set in the container (multiline KEY=VALUE)
-    default: ''
-  log-level:
-    description: Log level for devcontainer commands
-    default: 'info'
+  milliseconds:
+    description: Your input description here
+    required: true
+    default: '1000'
 
+# Define your outputs here.
 outputs:
-  container-id:
-    description: The ID of the container that was started
-  remote-user:
-    description: The remote user in the container
-  workspace-folder:
-    description: The remote workspace folder path
+  time:
+    description: Your output description here
 
 runs:
   using: node24
   main: dist/index.js
-  post: dist/post.js
-  post-if: always()
