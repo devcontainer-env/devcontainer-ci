@@ -1,5 +1,20 @@
 import * as core from '@actions/core'
-import { wait } from './wait.js'
+import * as exec from '@actions/exec'
+import { getInputs } from './inputs.js'
+import { buildUpArgs } from './commands.js'
+import { ensureDevcontainerCli } from './installer.js'
+import {
+  STATE_DID_UP,
+  STATE_CONTAINER_ID,
+  STATE_WORKSPACE_FOLDER
+} from './state.js'
+
+interface DevcontainerUpOutput {
+  outcome: string
+  containerId: string
+  remoteUser: string
+  remoteWorkspaceFolder: string
+}
 
 /**
  * The main function for the action.
@@ -8,20 +23,53 @@ import { wait } from './wait.js'
  */
 export async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
+    const inputs = getInputs()
+    core.debug(`Inputs: ${JSON.stringify(inputs, null, 2)}`)
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    core.info('Ensuring devcontainer CLI is installed...')
+    await ensureDevcontainerCli()
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    core.info('Running devcontainer up...')
+    const args = buildUpArgs(inputs)
+    const { exitCode, stdout, stderr } = await exec.getExecOutput(
+      'devcontainer',
+      args,
+      { ignoreReturnCode: true }
+    )
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    if (exitCode !== 0) {
+      throw new Error(
+        `devcontainer up failed with exit code ${exitCode}: ${stderr}`
+      )
+    }
+
+    let output: DevcontainerUpOutput
+    try {
+      output = JSON.parse(stdout)
+    } catch (error) {
+      throw new Error(`Failed to parse devcontainer output: ${stdout}`, {
+        cause: error
+      })
+    }
+
+    if (output.outcome !== 'success') {
+      throw new Error(
+        `devcontainer up did not succeed: outcome=${output.outcome}`
+      )
+    }
+
+    core.info(`Container started: ${output.containerId}`)
+
+    // Save state for post step
+    core.saveState(STATE_DID_UP, 'true')
+    core.saveState(STATE_CONTAINER_ID, output.containerId)
+    core.saveState(STATE_WORKSPACE_FOLDER, output.remoteWorkspaceFolder)
+
+    // Set outputs for subsequent steps
+    core.setOutput('container-id', output.containerId)
+    core.setOutput('remote-user', output.remoteUser)
+    core.setOutput('workspace-folder', output.remoteWorkspaceFolder)
   } catch (error) {
-    // Fail the workflow run if an error occurs
-    if (error instanceof Error) core.setFailed(error.message)
+    core.setFailed(error instanceof Error ? error.message : String(error))
   }
 }
