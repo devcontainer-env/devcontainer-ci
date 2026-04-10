@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      major: ${{ steps.release.outputs.major }}
+      pr: ${{ steps.release.outputs.pr }}
+    steps:
+      - name: Create Release PR
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: .github/config/release-please-config.json
+          manifest-file: .github/config/release-please-manifest.json
+          target-branch: main
+
+  build:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.pr != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ fromJSON(needs.release-please.outputs.pr).headBranchName }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Dist
+        run: npm run package
+
+      - name: 'Commit Dist'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add --force dist/*
+          git diff --cached --quiet || git commit -m "chore: auto-generate dist"
+          git push
+
+  tag-major:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Update major version tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          MAJOR=v${{ needs.release-please.outputs.major }}
+          git tag -fa "$MAJOR" -m "chore: update $MAJOR to ${{ needs.release-please.outputs.tag_name }}"
+          git push origin "$MAJOR" --force
