@@ -59,14 +59,15 @@ jobs:
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
     runs-on: ubuntu-latest
+    env:
+      GIT_TAG: v${{ needs.release-please.outputs.major }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Update major version tag
+      - name: Update version tag
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          MAJOR=v${{ needs.release-please.outputs.major }}
-          git tag -fa "$MAJOR" -m "chore: update $MAJOR to ${{ needs.release-please.outputs.tag_name }}"
-          git push origin "$MAJOR" --force
+          git tag -fa "$GIT_TAG" -m "chore: update $GIT_TAG to ${{ needs.release-please.outputs.tag_name }}"
+          git push origin "$GIT_TAG" --force
