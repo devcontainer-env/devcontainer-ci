@@ -47,20 +47,14 @@ jobs:
         id: build-dist
         run: npm run package
 
-      - name: Check for Changes
-        id: diff
-        run: |
-          if [ -f dist/index.js ] && [ -f dist/post.js ]; then
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: Commit Dist
-        if: steps.diff.outputs.has_changes == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -f dist/
-          git commit -m "chore: regenerate dist"
-          git push
+          if git diff --staged --quiet; then
+            echo "No changes to dist/, skipping commit"
+          else
+            git commit -m "chore: regenerate dist"
+            git push
+          fi
