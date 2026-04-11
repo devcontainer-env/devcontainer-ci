@@ -9,7 +9,8 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
+  id-token: write
 
 jobs:
   test-typescript:
@@ -18,38 +19,30 @@ jobs:
 
     steps:
       - name: Checkout
-        id: checkout
         uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        id: setup-node
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: .node-version
-          cache: npm
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v22
+
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v13
 
       - name: Install Dependencies
-        id: npm-ci
-        run: npm ci
+        run: nix develop --command npm ci
 
       - name: Check Format
-        id: npm-format-check
-        run: npm run format:check
+        run: nix develop --command npm run format:check
 
       - name: Lint
-        id: npm-lint
-        run: npm run lint
+        run: nix develop --command npm run lint
 
       - name: Test
-        id: npm-ci-test
-        run: npm run ci-test
+        run: nix develop --command npm run ci-test
 
       - name: Build Dist
-        id: build-dist
-        run: npm run package
+        run: nix develop --command npm run package
 
       - name: Verify Dist is Up-to-Date
-        id: verify-dist
         run: |
           if [ "$(git diff --ignore-space-at-eol --text dist/ | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes in dist/. Run 'npm run package' and commit changes."
