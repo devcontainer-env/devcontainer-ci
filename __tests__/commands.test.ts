@@ -211,5 +211,4 @@ describe('commands', () => {
       expect(args).toContain('debug')
     })
   })
-
 })

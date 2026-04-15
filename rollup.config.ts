@@ -15,5 +15,5 @@ export default defineConfig([
       sourcemap: true
     },
     plugins: [typescript(), nodeResolve({ preferBuiltins: true }), commonjs()]
-  },
+  }
 ])
