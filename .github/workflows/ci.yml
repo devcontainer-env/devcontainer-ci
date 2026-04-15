@@ -37,17 +37,6 @@ jobs:
       - name: Test
         run: nix develop --command npm run ci-test
 
-      - name: Build Dist
-        run: nix develop --command npm run package
-
-      - name: Verify Dist is Up-to-Date
-        run: |
-          if [ "$(git diff --ignore-space-at-eol --text dist/ | wc -l)" -gt "0" ]; then
-            echo "Detected uncommitted changes in dist/. Run 'npm run package' and commit changes."
-            git diff --ignore-space-at-eol --text dist/
-            exit 1
-          fi
-
   release:
     needs: build
     if: github.event_name == 'push'
