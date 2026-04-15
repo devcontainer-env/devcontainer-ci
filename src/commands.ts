@@ -35,7 +35,3 @@ export function buildUpArgs(inputs: ActionInputs): string[] {
 
   return args
 }
-
-export function buildDownArgs(workspaceFolder: string): string[] {
-  return ['down', '--workspace-folder', workspaceFolder]
-}

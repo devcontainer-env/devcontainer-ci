@@ -16,14 +16,4 @@ export default defineConfig([
     },
     plugins: [typescript(), nodeResolve({ preferBuiltins: true }), commonjs()]
   },
-  {
-    input: 'src/post-index.ts',
-    output: {
-      esModule: true,
-      file: 'dist/post.js',
-      format: 'es',
-      sourcemap: true
-    },
-    plugins: [typescript(), nodeResolve({ preferBuiltins: true }), commonjs()]
-  }
 ])

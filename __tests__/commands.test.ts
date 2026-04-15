@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals'
-import { buildUpArgs, buildDownArgs } from '../src/commands'
+import { buildUpArgs } from '../src/commands'
 import { ActionInputs } from '../src/inputs'
 
 describe('commands', () => {
@@ -212,15 +212,4 @@ describe('commands', () => {
     })
   })
 
-  describe('buildDownArgs', () => {
-    it('should build exact down args', () => {
-      const args = buildDownArgs('/workspace')
-      expect(args).toEqual(['down', '--workspace-folder', '/workspace'])
-    })
-
-    it('should handle default workspace folder', () => {
-      const args = buildDownArgs('.')
-      expect(args).toEqual(['down', '--workspace-folder', '.'])
-    })
-  })
 })
