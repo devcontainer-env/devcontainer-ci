@@ -2,7 +2,7 @@ name: Update Flake Locks
 
 on:
   schedule:
-    - cron: "0 0 * * 1"
+    - cron: '0 0 * * 1'
   workflow_dispatch:
 
 jobs:
@@ -29,8 +29,8 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@v28
         with:
           pr-labels: dependencies
-          pr-title: "chore(flake): update flake.lock"
-          commit-msg: "chore(flake): update flake.lock"
+          pr-title: 'chore(flake): update flake.lock'
+          commit-msg: 'chore(flake): update flake.lock'
           git-author-name: dependabot[bot]
           git-author-email: dependabot[bot]@users.noreply.github.com
           git-committer-name: dependabot[bot]
