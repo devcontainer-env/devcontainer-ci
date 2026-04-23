@@ -1,20 +1,27 @@
 name: CI
 
-permissions:
-  contents: write
-  id-token: write
-  pull-requests: write
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+defaults:
+  run:
+    shell: bash
+
 jobs:
   build:
     name: TypeScript Tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -24,6 +31,9 @@ jobs:
 
       - name: Setup Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@v13
+        with:
+          use-flakehub: disabled
+          use-gha-cache: enabled
 
       - name: Install Dependencies
         run: nix develop --command npm ci
@@ -41,6 +51,11 @@ jobs:
     needs: build
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      pull-requests: write
+    timeout-minutes: 15
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
@@ -62,6 +77,9 @@ jobs:
     needs: release
     if: ${{ needs.release.outputs.pr != '' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -73,6 +91,9 @@ jobs:
 
       - name: Setup Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@v13
+        with:
+          use-flakehub: disabled
+          use-gha-cache: enabled
 
       - name: Install Dependencies
         run: nix develop --command npm ci
@@ -92,6 +113,9 @@ jobs:
     needs: release
     if: ${{ needs.release.outputs.release_created }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 5
     env:
       GIT_TAG: v${{ needs.release.outputs.major }}
     steps:
