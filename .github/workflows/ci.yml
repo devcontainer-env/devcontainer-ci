@@ -15,7 +15,7 @@ defaults:
     shell: bash
 
 jobs:
-  build:
+  test:
     name: TypeScript Tests
     runs-on: ubuntu-latest
     permissions:
@@ -48,7 +48,7 @@ jobs:
         run: nix develop --command npm run ci-test
 
   release:
-    needs: build
+    needs: test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
@@ -73,7 +73,7 @@ jobs:
           config-file: .github/config/release-please-config.json
           target-branch: main
 
-  build-dist:
+  build:
     needs: release
     if: ${{ needs.release.outputs.pr != '' }}
     runs-on: ubuntu-latest
