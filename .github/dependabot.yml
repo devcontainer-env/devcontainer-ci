@@ -10,7 +10,6 @@ updates:
         patterns: ["*"]
     labels:
       - "dependencies"
-      - "github-actions"
       - "auto-merge"
     commit-message:
       prefix: "chore"
