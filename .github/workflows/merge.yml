@@ -22,9 +22,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PR_URL: ${{ github.event.pull_request.html_url }}
         run: |
-          # Try to approve the PR, but continue if it fails (e.g. if the actor cannot approve its own PR)
           gh pr review --approve "$PR_URL" || echo "PR approval skipped or failed."
-          
-          # Enable auto-merge with squash strategy
-          # This requires "Allow auto-merge" to be enabled in the repository settings.
           gh pr merge --auto --squash "$PR_URL"
