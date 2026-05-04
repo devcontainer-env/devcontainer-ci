@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/devcontainer-env/devcontainer-ci/compare/v1.1.1...v1.1.2) (2026-05-04)
+
+
+### Bug Fixes
+
+* format update.yml with prettier (single quotes) ([bc10fbe](https://github.com/devcontainer-env/devcontainer-ci/commit/bc10fbe10c48f6f8e4cb1abe4cff8c2962037da7))
+
 ## [1.1.1](https://github.com/devcontainer-env/devcontainer-ci/compare/v1.1.0...v1.1.1) (2026-04-15)
 
 

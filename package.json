@@ -1,7 +1,7 @@
 {
   "name": "devcontainer-ci",
   "description": "GitHub Action to run a dev container using @devcontainers/cli",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "devcontainer-env",
   "type": "module",
   "private": true,
