@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/devcontainer-env/devcontainer-ci/compare/v1.1.2...v1.1.3) (2026-10-01)
+
+
+### Bug Fixes
+
+* **deps:** keep TypeScript on 6.0 until typescript-eslint supports 7 ([9441dd6](https://github.com/devcontainer-env/devcontainer-ci/commit/9441dd6f4cc744b2c2a1da6e363ed41d38a05030))
+
 ## [1.1.2](https://github.com/devcontainer-env/devcontainer-ci/compare/v1.1.1...v1.1.2) (2026-05-04)
 
 
