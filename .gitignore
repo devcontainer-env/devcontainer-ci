@@ -103,3 +103,12 @@ dist/
 # IDE files
 .idea
 *.code-workspace
+
+# direnv
+.direnv/
+.env.local
+.envrc.local
+
+# Local nix build result symlinks (point into /nix/store).
+.nix
+.nix-*-link
