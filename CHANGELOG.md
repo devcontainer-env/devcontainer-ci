@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.3](https://github.com/devcontainer-env/devcontainer-ci/compare/v1.1.2...v1.1.3) (2026-11-07)
+
+
+### Bug Fixes
+
+* **ci:** merge with the App token so main gets its CI run ([#86](https://github.com/devcontainer-env/devcontainer-ci/issues/86)) ([a550b97](https://github.com/devcontainer-env/devcontainer-ci/commit/a550b97046f9f9a29f9ed9ce86edd016f5acc66c))
+* **deps:** keep TypeScript on 6.0 until typescript-eslint supports 7 ([9441dd6](https://github.com/devcontainer-env/devcontainer-ci/commit/9441dd6f4cc744b2c2a1da6e363ed41d38a05030))
+
 ## [1.1.2](https://github.com/devcontainer-env/devcontainer-ci/compare/v1.1.1...v1.1.2) (2026-05-04)
 
 
